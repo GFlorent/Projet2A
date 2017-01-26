@@ -18,10 +18,10 @@ fi
 echo "Le nom de votre service ?"
 read SERVICE
 sleep 1
-echo "Etape 1: repertoire de destination de la backup ... (default: /home/$USER/BACKUP_$NOW)"
+echo "Etape 1: repertoire de destination de la backup ? (default: /home/"$USER"/"$SERVICE"_BACKUP_$NOW)"
 read PATHDEST
 if [[ -z "$PATHDEST" ]]; then
-PATHDEST=$(echo "/home/"$USER"/BACKUP_"$NOW)
+PATHDEST=$(echo "/home/"$USER"/"$SERVICE"_BACKUP_"$NOW)
 fi
 echo "Directory to backup : "$PATHDEST
 echo "Etape 2: Archive du /etc/ ..."
@@ -57,18 +57,20 @@ echo "Sauvegarde de /opt ... cela peut prendre du temps ..."
 tar -rvf BACKUP_$NOW.tar /opt
 fi
 echo "Terminé avec succès, votre archive est dans $PATHDEST"
-if [[ $FTP!='oui' ]]; then
+if [[ $FTP != 'oui' ]]; then
   exit 0
 fi
 echo "Etape 5: Envoi de l'archive ..."
-HOST='10.2.0.250'
-PORT='21'
-LOGIN='johnny'
-PASSWORD='isagoodboy'
-ftp -i -n $HOST $PORT << END_SCRIPT
-quote USER $LOGIN
-quote PASS $PASSWORD
-mkdir $SERVICE
-cd $SERVICE
-put $PATHDEST/BACKUP_$NOW.tar
-quit
+sshpass -p 'isagoodboy' scp -r $PATHDEST johnny@10.2.0.250:$(echo "/home/johnny/"$SERVICE"_BACKUP_"$NOW"/BACKUP_"$NOW".tar")
+
+#HOST='10.2.0.250'
+#PORT='21'
+#LOGIN='johnny'
+#PASSWORD='isagoodboy'
+#ftp -i -n $HOST $PORT
+#quote USER $LOGIN
+#quote PASS $PASSWORD
+#mkdir $SERVICE
+#cd $SERVICE
+#put $PATHDEST/$SERVICE_BACKUP_$NOW.tar
+#quit
