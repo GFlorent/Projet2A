@@ -7,37 +7,45 @@ echo "#         Service Virtualisation        #"
 echo "#########################################"
 sleep 1
 if [[ $USER='root' ]]; then
-echo "Le script doit être executé en ROOT, forcer l'execution quand même ? (oui/non)"
+echo "Etape 1: Le script doit être executé en ROOT, forcer l'execution quand même ? (oui/non)"
 read Force_exec
 if [[ $Force_exec != 'oui' ]]; then
 exit 0
 fi
-echo "Voulez-vous envoyer vos fichiers sur le NAS virtu ?(Autorisation de la Virtualisation avant opération !)"
+echo "#########################################"
+echo "Etape 2: Voulez-vous envoyer vos fichiers sur le NAS virtu ?
+(Autorisation de la Virtualisation avant opération ! | oui/non)"
 read FTP
 fi
-echo "Le nom de votre service ?"
+echo "#########################################"
+echo "Etape 3: Le nom de votre service ?"
 read SERVICE
 sleep 1
-echo "Etape 1: repertoire de destination de la backup ? (default: /home/"$USER"/"$SERVICE"_BACKUP_$NOW)"
+echo "#########################################"
+echo "Etape 4: repertoire de destination de la backup ? (default: /home/"$USER"/"$SERVICE"_BACKUP_$NOW)"
 read PATHDEST
 if [[ -z "$PATHDEST" ]]; then
 PATHDEST=$(echo "/home/"$USER"/"$SERVICE"_BACKUP_"$NOW)
 fi
 echo "Directory to backup : "$PATHDEST
-echo "Etape 2: Archive du /etc/ ..."
+echo "#########################################"
+echo "Etape 5: Archive du /etc/ ..."
 echo "Voulez-vous sauvegarder le dossier /etc ? (oui/non)"
 read pass2
 shift
-echo "Etape 3: Archive du /var/ ..."
+echo "#########################################"
+echo "Etape 6: Archive du /var/ ..."
 echo "Voulez-vous sauvegarder le dossier /var ? (oui/non)"
 read pass3
 shift
-echo "Etape 3: Archive du /opt/ ..."
+echo "#########################################"
+echo "Etape 7: Archive du /opt/ ..."
 echo "Voulez-vous sauvegarder le dossier /opt ? (oui/non)"
 read pass4
 shift
 sleep 1
-echo "Etape 4: Création de la sauvegarde"
+echo "#########################################"
+echo "Etape 8: Création de la sauvegarde"
 sleep 1
 mkdir $PATHDEST
 cd $PATHDEST
@@ -60,7 +68,8 @@ echo "Terminé avec succès, votre archive est dans $PATHDEST"
 if [[ $FTP != 'oui' ]]; then
   exit 0
 fi
-echo "Etape 5: Envoi de l'archive ..."
+echo "#########################################"
+echo "Etape 9: Envoi de l'archive ..."
 sshpass -p 'isagoodboy' scp -r $PATHDEST johnny@10.2.0.250:$(echo "/home/johnny/"$SERVICE"_BACKUP_"$NOW"/BACKUP_"$NOW".tar")
 
 #HOST='10.2.0.250'
