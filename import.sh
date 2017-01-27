@@ -1,4 +1,5 @@
 #!/bin/bash
+#Version: 1.0.3
 NOW=$(date +'%Y%m%d%H%M%S')
 sleep 1
 echo "#########################################"
