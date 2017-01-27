@@ -7,7 +7,8 @@ echo "#         Service Virtualisation        #"
 echo "#########################################"
 sleep 1
 if [[ $USER='root' ]]; then
-echo "Etape 1: Le script doit être executé en ROOT, forcer l'execution quand même ? (oui/non)"
+echo "Etape 1: Le script doit être executé en ROOT,
+forcer l'execution quand même ? (oui/non)"
 read Force_exec
 if [[ $Force_exec != 'oui' ]]; then
 exit 0
@@ -22,7 +23,8 @@ echo "Etape 3: Le nom de votre service ?"
 read SERVICE
 sleep 1
 echo "#########################################"
-echo "Etape 4: repertoire de destination de la backup ? (default: /home/"$USER"/"$SERVICE"_BACKUP_$NOW)"
+echo "Etape 4: repertoire de destination de la backup ?
+(default: /home/"$USER"/"$SERVICE"_BACKUP_$NOW)"
 read PATHDEST
 if [[ -z "$PATHDEST" ]]; then
 PATHDEST=$(echo "/home/"$USER"/"$SERVICE"_BACKUP_"$NOW)
@@ -49,7 +51,7 @@ echo "Etape 8: Création de la sauvegarde"
 sleep 1
 mkdir $PATHDEST
 cd $PATHDEST
-tar cvfT BACKUP_$NOW.tar /dev/null
+tar cvT BACKUP_$NOW.tar /dev/null
 if [[ $pass2 == 'oui' ]]; then
 echo "Sauvegarde de /etc ... cela peut prendre du temps ..."
 tar -rvf BACKUP_$NOW.tar /etc
@@ -70,7 +72,7 @@ if [[ $FTP != 'oui' ]]; then
 fi
 echo "#########################################"
 echo "Etape 9: Envoi de l'archive ..."
-sshpass -p 'isagoodboy' scp -r $PATHDEST johnny@10.2.0.250:$(echo "/home/johnny/"$SERVICE"_BACKUP_"$NOW"/BACKUP_"$NOW".tar")
+sshpass -p 'isagoodboy' scp -r $PATHDEST johnny@10.2.0.250:/home/johnny/$SERVICE_BACKUP_$NOW/BACKUP_$NOW.tar
 
 #HOST='10.2.0.250'
 #PORT='21'
