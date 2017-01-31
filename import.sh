@@ -73,16 +73,11 @@ if [[ $FTP != 'oui' ]]; then
 fi
 echo "#########################################"
 echo "Etape 9: Envoi de l'archive ..."
-sshpass -p 'isagoodboy' scp -r $PATHDEST johnny@10.2.0.250:/home/johnny/$SERVICE_BACKUP_$NOW/BACKUP_$NOW.tar
-
-#HOST='10.2.0.250'
-#PORT='21'
-#LOGIN='johnny'
-#PASSWORD='isagoodboy'
-#ftp -i -n $HOST $PORT
-#quote USER $LOGIN
-#quote PASS $PASSWORD
-#mkdir $SERVICE
-#cd $SERVICE
-#put $PATHDEST/$SERVICE_BACKUP_$NOW.tar
-#quit
+echo "IP du serveur (10.2.0.250))':"
+read IP_serv
+if [[ -z $IP_serv ]]; then
+  IP_serv=$(echo "10.2.0.250")
+fi
+scp -v -r $PATHDEST "johnny@"$IP_serv":./"$SERVICE"_BACKUP_"$NOW.tar
+echo "#########################################"
+echo "Fin du script"
